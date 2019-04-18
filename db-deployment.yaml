@@ -4,6 +4,7 @@ metadata:
   name: exposedb
 spec:
   ports:
+  - protocol: "TCP"
   - name: "db"
     port: 3306
     targetPort: 3306
