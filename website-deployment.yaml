@@ -4,6 +4,7 @@ metadata:
   name: exposewebsite
 spec:
   ports:
+  - protocol: "TCP"
   - name: "website"
     port: 8080
     targetPort: 80
