@@ -6,7 +6,8 @@ spec:
   selector:
     io.kompose.service: minio
   ports:
-  - name: "minio1"
+  - protocol: "TCP"
+  - name: "minio"
     port: 9000
     targetPort: 9000
   type: LoadBalancer
