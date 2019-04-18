@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: exposewebsite
+spec:
+  ports:
+  - name: "website"
+    port: 8080
+    targetPort: 80
+  type: LoadBalancer
+  selector:
+    io.kompose.service: website
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: website
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: website
+    spec:
+      containers:
+      - env:
+        - name: MYSQL_HOST
+          value: db
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        image: gestionproduit
+        name: website
+        ports:
+        - containerPort: 80
+        resources: {}
+      restartPolicy: Always
+status: {}

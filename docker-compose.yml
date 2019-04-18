@@ -1,0 +1,33 @@
+version: '3.1'
+services:
+  db:
+    image: mysql:5.7
+    environment:
+      - MYSQL_DATABASE=gestion_produits
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - ./database/:/docker-entrypoint-initdb.d/
+
+  minio1:
+    image: minio/minio
+    volumes:
+      - ./minio2/:/export
+    ports:
+      - "9001:9000"
+    environment:
+      MINIO_ACCESS_KEY: daravuth
+      MINIO_SECRET_KEY: daravuth
+    command: server minio2/export
+  
+  website:
+    build: 
+      context: .
+    image: gestionproduit
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+      - minio1
+    environment:
+      -  MYSQL_HOST=db
+      -  MYSQL_ROOT_PASSWORD=root

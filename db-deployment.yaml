@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: exposedb
+spec:
+  ports:
+  - name: "db"
+    port: 3306
+    targetPort: 3306
+  type: LoadBalancer
+  selector:
+    io.kompose.service: db
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: db
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: db
+    spec:
+      containers:
+      - env:
+        - name: MYSQL_DATABASE
+          value: gestion_produits
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        image: mysql:5.7
+        name: db
+        resources: {}
+      restartPolicy: Always
+status: {}
